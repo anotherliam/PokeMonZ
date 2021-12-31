@@ -6,6 +6,7 @@ import {
   StatNames,
   createBasicStats,
   createZeroStats,
+  StatName,
 } from "./statistic";
 import randFromArray from "../utils/randFromArray";
 import Nature from "./data/hardcoded/nature";
@@ -48,6 +49,16 @@ export class Pokemon {
         natureMult) /
         100
     );
+  }
+
+  private getNatureMultForStat(stat: StatName) {
+    const result = this.nature.statChanges.find(
+      ([statChangeName]) => statChangeName === stat
+    );
+    if (result) {
+      return result[1];
+    }
+    return 1.0;
   }
 
   constructor(savedPokemon: SavedPokemon);
@@ -141,7 +152,8 @@ export class Pokemon {
       if (stat === "mhp") {
         this.stats.mhp = this.calculateHp(base, this.lv, iv, ev);
       } else {
-        this.stats[stat] = this.calculateStat(base, this.lv, iv, ev, 1.0);
+        const nature = this.getNatureMultForStat(stat);
+        this.stats[stat] = this.calculateStat(base, this.lv, iv, ev, nature);
       }
     });
     // Recalculate current hp
@@ -174,10 +186,9 @@ export class Pokemon {
    * Creates a clone of this pokemon
    */
   clone() {
-    return new Pokemon(this.save())
+    return new Pokemon(this.save());
   }
 }
-
 
 // Add to window
 addToWindow("Pokemon", Pokemon);

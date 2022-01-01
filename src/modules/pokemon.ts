@@ -16,7 +16,7 @@ import addToWindow from "../globalModules";
 // This module deals with a Pokemon itself
 //
 
-export class Pokemon {
+export default class Pokemon {
   uid: string;
   nickname: string | null;
   species: SpeciesData;

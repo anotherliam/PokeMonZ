@@ -3,7 +3,7 @@ import {
   Rectangle,
   $gameSystem,
 } from "rmmz";
-import { Pokemon } from "../modules/pokemon";
+import Pokemon from "../modules/pokemon";
 import PokeImageManager from "../pokeImageManager";
 import { Colors } from "../Theme";
 

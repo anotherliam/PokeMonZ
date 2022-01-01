@@ -1,4 +1,4 @@
-import { Pokemon } from "./modules/pokemon";
+import Pokemon from "./modules/pokemon";
 import ui from "./ui";
 
 declare global {
@@ -14,8 +14,6 @@ declare global {
 }
 
 (() => {
-  console.log("pogchamp - its a plugin!");
-  console.log("adding pokemen");
   window.$pmz = {
     player: {
       trainerId: "0-",

@@ -6,6 +6,7 @@
         "esModuleInterop": true,
         "module": "es6",
         "target": "es6",
+        "resolveJsonModule": true,
         "moduleResolution": "node",
         "lib": ["es5", "es6", "dom"]
     },

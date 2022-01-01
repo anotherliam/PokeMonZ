@@ -1,5 +1,5 @@
-import Move, { SavedMove } from "./move";
-import { SpeciesById, SpeciesData } from "./data/runtime/species";
+import PokemonMove, { SavedPokemonMove } from "./pokemonMove";
+import { Species } from "./data/runtime/species";
 import { nanoid } from "nanoid";
 import {
   Statistics,
@@ -11,6 +11,7 @@ import {
 import randFromArray from "../utils/randFromArray";
 import Nature from "./data/hardcoded/nature";
 import addToWindow from "../globalModules";
+import { Form } from "./data/runtime/form";
 
 //
 // This module deals with a Pokemon itself
@@ -19,8 +20,8 @@ import addToWindow from "../globalModules";
 export default class Pokemon {
   uid: string;
   nickname: string | null;
-  species: SpeciesData;
-  currentForm: string | null; // Null if in default form
+  species: Species;
+  form: Form;
   trainerId: string;
   lv: number;
   stats: Statistics;
@@ -28,7 +29,7 @@ export default class Pokemon {
   evs: Statistics;
   ivs: Statistics;
   nature: Nature;
-  moves: Move[];
+  moves: PokemonMove[];
   stepsToHatch: number;
   isShiny: boolean;
 
@@ -72,10 +73,20 @@ export default class Pokemon {
     if (isSavedPokemon(speciesId)) {
       const saved = speciesId;
       // Find species
-      const species = SpeciesById.get(saved.speciesId);
+      const species = Species.dataById.get(saved.speciesId);
       if (!species) {
         throw Error(
-          `Invalid Species when restoring Pokemon ${saved.uid}, ${saved.speciesId}`
+          `Invalid Species when restoring Pokemon ${saved.uid}: ${saved.speciesId}`
+        );
+      }
+      // Get form from species
+      const form =
+        saved.currentFormName === null || saved.currentFormName === "default"
+          ? species.defaultForm
+          : species.variantFormsByName.get(saved.currentFormName);
+      if (!form) {
+        throw Error(
+          `Invalid Form when restoring Pokemon ${saved.uid}: ${saved.currentFormName}`
         );
       }
       const nature = Nature.dataById.get(saved.natureId);
@@ -89,7 +100,7 @@ export default class Pokemon {
       this.nickname = saved.nickname;
       this.species = species;
       this.trainerId = saved.trainerId;
-      this.currentForm = saved.currentFormId;
+      this.form = form;
       this.evs = saved.evs;
       this.ivs = saved.ivs;
       this.lv = saved.lv;
@@ -97,13 +108,15 @@ export default class Pokemon {
       this.chp = saved.chp;
       this.isShiny = saved.isShiny;
       this.nature = nature;
-      this.moves = saved.moves.map((savedMove) => new Move(savedMove));
+      this.moves = saved.moves.map(
+        (SavedPokemonMove) => new PokemonMove(SavedPokemonMove)
+      );
       this.stepsToHatch = saved.stepsToHatch;
     } else {
       // Create new
       const stats = createBasicStats();
       // Find species
-      const species = SpeciesById.get(speciesId);
+      const species = Species.dataById.get(speciesId);
       if (!species) {
         throw Error(`Invalid Species: ${speciesId}`);
       }
@@ -116,7 +129,7 @@ export default class Pokemon {
       this.lv = lv;
       this.species = species;
       this.trainerId = ownerId;
-      this.currentForm = null;
+      this.form = species.defaultForm;
       this.nickname = null;
       this.stats = stats;
       this.chp = stats.mhp;
@@ -147,7 +160,7 @@ export default class Pokemon {
    */
   calculateStats() {
     const hpDiff = this.stats.mhp - this.chp;
-    const { baseStats } = this.species;
+    const { baseStats } = this.form;
     StatNames.forEach((stat) => {
       const base = baseStats[stat];
       const iv = this.ivs[stat];
@@ -172,7 +185,7 @@ export default class Pokemon {
       uid: this.uid,
       nickname: this.nickname,
       speciesId: this.species.id,
-      currentFormId: this.currentForm, // Null if in default form
+      currentFormName: this.form.isDefaultForm ? null : this.form.formName, // Null if in default form
       trainerId: this.trainerId,
       lv: this.lv,
       stats: this.stats,
@@ -205,7 +218,7 @@ type SavedPokemon = {
   uid: string;
   nickname: string | null;
   speciesId: string;
-  currentFormId: string | null;
+  currentFormName: string | null;
   trainerId: string;
   lv: number;
   stats: Statistics;
@@ -213,7 +226,7 @@ type SavedPokemon = {
   evs: Statistics;
   ivs: Statistics;
   natureId: string;
-  moves: SavedMove[];
+  moves: SavedPokemonMove[];
   stepsToHatch: number;
   isShiny: boolean;
 };

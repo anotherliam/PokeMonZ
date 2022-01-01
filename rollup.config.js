@@ -3,6 +3,8 @@ import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 
+import json from "@rollup/plugin-json";
+
 import { terser } from 'rollup-plugin-terser';
 import externalGlobals from "rollup-plugin-external-globals";
 
@@ -25,6 +27,7 @@ export default [
                 sourcemap: false,
                 plugins: [
                     terser({
+                        mangle: false,
                         format: {
                             comments: false,
                             preamble: header
@@ -39,6 +42,7 @@ export default [
                 sourcemap: false,
                 plugins: [
                     terser({
+                        mangle: false,
                         format: {
                             comments: false,
                             preamble: header
@@ -64,7 +68,8 @@ export default [
             }),
             replace({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-            })
+            }),
+            json(),
         ]
 	}
 ];

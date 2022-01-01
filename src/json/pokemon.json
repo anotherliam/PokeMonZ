@@ -1,0 +1,60 @@
+[
+    {
+        "id": "bulbasaur",
+        "name": "Bulbasaur",
+        "types": [
+            "grass",
+            "poison"
+        ],
+        "baseStats": {
+            "mhp": 45,
+            "atk": 49,
+            "def": 49,
+            "spd": 45,
+            "spatk": 65,
+            "spdef": 65
+        },
+        "evYields": {
+            "mhp": 0,
+            "atk": 0,
+            "def": 0,
+            "spd": 0,
+            "spatk": 1,
+            "spdef": 0
+        },
+        "genderRate": 1,
+        "growthRate": "medium_fast",
+        "baseEXP": 64,
+        "catchRate": 45,
+        "baseHappiness": 70,
+        "abilityIds": [
+            "overgrow"
+        ],
+        "hiddenAbilityIds": [
+            "chlorophyll"
+        ],
+        "levelLearnset": [
+            {
+                "moveId": "tackle",
+                "level": 1
+            }
+        ],
+        "tutorMoveIds": [],
+        "eggMoveIds": [],
+        "egg": {
+            "groups": [
+                "monster",
+                "grass"
+            ],
+            "stepsToHatch": 5120
+        },
+        "height": 0.7,
+        "weight": 6.9,
+        "shape": "Quadruped",
+        "color": "Green",
+        "genus": "Seed",
+        "flavor": "There is a plant seed on its back right from the day this Pokémon is born. The seed slowly grows larger.",
+        "generation": 1,
+        "wildItems": []
+    }
+]

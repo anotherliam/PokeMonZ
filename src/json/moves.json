@@ -1,0 +1,15 @@
+[
+    {
+        "id": "tackle",
+        "name": "Tackle",
+        "power": 40,
+        "accuracy": 100,
+        "category":"phys",
+        "type": "normal",
+        "pp": 35,
+        "flags": ["contact"],
+        "effectCodes": [],
+        "priority": 0,
+        "target": "near_other"
+    }
+]

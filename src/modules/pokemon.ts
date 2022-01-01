@@ -20,6 +20,7 @@ export default class Pokemon {
   uid: string;
   nickname: string | null;
   species: SpeciesData;
+  currentForm: string | null; // Null if in default form
   trainerId: string;
   lv: number;
   stats: Statistics;
@@ -88,6 +89,7 @@ export default class Pokemon {
       this.nickname = saved.nickname;
       this.species = species;
       this.trainerId = saved.trainerId;
+      this.currentForm = saved.currentFormId;
       this.evs = saved.evs;
       this.ivs = saved.ivs;
       this.lv = saved.lv;
@@ -114,6 +116,7 @@ export default class Pokemon {
       this.lv = lv;
       this.species = species;
       this.trainerId = ownerId;
+      this.currentForm = null;
       this.nickname = null;
       this.stats = stats;
       this.chp = stats.mhp;
@@ -169,6 +172,7 @@ export default class Pokemon {
       uid: this.uid,
       nickname: this.nickname,
       speciesId: this.species.id,
+      currentFormId: this.currentForm, // Null if in default form
       trainerId: this.trainerId,
       lv: this.lv,
       stats: this.stats,
@@ -201,6 +205,7 @@ type SavedPokemon = {
   uid: string;
   nickname: string | null;
   speciesId: string;
+  currentFormId: string | null;
   trainerId: string;
   lv: number;
   stats: Statistics;

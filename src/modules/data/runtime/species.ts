@@ -1,3 +1,8 @@
+// Species are divided into 1 or more forms, including a default form
+// Some things are defined on the species and others on the form
+// In the JSON, all of the default form info is in the same object as the species
+// However alternate forms are stored elsewhere
+
 type Statistics = {
     mhp: number;
     atk: number;
@@ -17,35 +22,42 @@ type SpeciesWildItem = Readonly<{
     chance: number;
 }>
 
-export type SpeciesData = Readonly<{
+// An individual pokemon species, used as a basis and combined with a form to create a FullSpeciesData
+export type Species = Readonly<{
     id: string;
     name: string;
-    typeIds: string[];
-    baseStats: Statistics;
-    evYields: Statistics;
-    genderRate: number;
+    egg: {
+        groups: string[];
+        stepsToHatch: number;
+    };
     growthRate: string;
+    isBaby: boolean;
+    isLegendary: boolean;
+    isMythical: boolean;
+    shape: string;
+    color: string;
+    genderRate: number;
     baseEXP: number;
     catchRate: number;
     baseHappiness: number;
-    abilityIds: string[];
-    hiddenAbilityIds: string[];
     moves: {
         levelLearnset: SpeciesLevelMove[];
         tutorMoveIds: string[];
         eggMoveIds: string[];
     };
-    egg: {
-        groups: string[];
-        stepsToHatch: number;
-    };
     height: number;
     weight: number;
-    shape: string;
-    color: string;
     genus: string;
     flavor: string;
     generation: number;
+}>
+
+export type Form = Readonly<{
+    abilityIds: string[];
+    hiddenAbilityIds: string[];
+    types: string[];
+    baseStats: Statistics;
+    evYields: Statistics;
     wildItems: SpeciesWildItem[];
 }>
 
